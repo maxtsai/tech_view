@@ -7,7 +7,7 @@ import os
 import datetime
 import sys
 
-PATH = "/home/max/src/github/stock_view/data/"
+PATH = "/home/max/src/github/tech_view/data/"
 
 class yahoo:
 	def __init__(self):
