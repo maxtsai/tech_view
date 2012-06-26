@@ -7,7 +7,8 @@ import os
 import datetime
 import sys
 
-PATH = "/home/max/src/github/tech_view/data/"
+
+PATH = "data/"
 
 class yahoo:
 	def __init__(self):
@@ -62,9 +63,9 @@ class yahoo:
 
 	def __request_history_from_cache(self, symbol, s, e):
 		hh = []
-		if not os.path.exists(PATH + symbol):
+		if not os.path.exists(os.path.realpath(os.path.dirname(sys.argv[0])) + "/" + PATH + symbol):
 			return ""
-		f = open(PATH + symbol, "r")
+		f = open(os.path.realpath(os.path.dirname(sys.argv[0])) + "/" + PATH + symbol, "r")
 		for line in f.readlines():
 			ret = line.split(",")
 			ret[6] = ret[6].strip("\n")
