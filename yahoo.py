@@ -198,4 +198,4 @@ class yahoo:
 
 if __name__ == '__main__':
 	ya = yahoo()
-	ya.update_all_history("stock_list.txt", "2011/1/1")
+	ya.update_all_history("stock_list.txt", "2012/1/1")

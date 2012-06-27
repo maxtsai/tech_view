@@ -92,7 +92,7 @@ class LineChart(wx.Panel):
 					input_str = ('<font style="normal" color="red" weight="bold" size="10" > <sub> %s = %s </sub> </font>' %
 							(show_key, self.AData[int((self.MPosition[0]-self.Axis[0][0])/x_axis)][show_key]))
 				elif self.AData[int((self.MPosition[0]-self.Axis[0][0])/x_axis)]['Close'] < self.AData[int((self.MPosition[0]-self.Axis[0][0])/x_axis)]['Open']:
-					input_str = ('<font style="normal" color="dark green" weight="bold" size="10" > <sub> %s = %s </sub> </font>' %
+					input_str = ('<font style="normal" color="Sea Green" weight="bold" size="10" > <sub> %s = %s </sub> </font>' %
 							(show_key, self.AData[int((self.MPosition[0]-self.Axis[0][0])/x_axis)][show_key]))
 				else:
 					input_str = ('<font style="normal" color="black" weight="bold" size="10" > <sub> %s = %s </sub> </font>' %
@@ -244,9 +244,9 @@ class LineChartExample(wx.Frame):
 	def __init__(self, parent, id, title):
 		wx.Frame.__init__(self, parent, id, title, size=(800, 600))
 
-		#records = wave(sys.argv[1], "2011/6/25", "2012/6/25", 5)
+		records = wave(sys.argv[1], "2011/1/25", "2012/6/25", 5)
 		y = yahoo()
-		records = y.ma(sys.argv[1], "2011/5/25", "2012/6/25", 5)
+		#records = y.ma(sys.argv[1], "2011/5/25", "2012/6/25", 5)
 		dat = []
 		vdat = []
 		for i in records:
