@@ -39,7 +39,7 @@ class yahoo:
 		data[self.HIGH] = string.atof(r[2])
 		data[self.LOW] = string.atof(r[3])
 		data[self.CLOSE] = string.atof(r[4])
-		data[self.VOLUME] = string.atoi(r[5])/1000
+		data[self.VOLUME] = string.atoi(r[5])
 		data[self.ADJCLOSE] = string.atof(r[6])
 		return data
 	def __request_history(self, symbol, s, e):

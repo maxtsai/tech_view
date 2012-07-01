@@ -1,5 +1,6 @@
 #!/usr/bin/python
-#coding=utf-8
+# -*- coding: utf-8 -*-
+
 
 
 import wx
@@ -9,6 +10,7 @@ import sys
 import  wx.lib.fancytext as fancytext
 from yahoo import *
 from wave import *
+from financial_statement import *
 
 class LineChart(wx.Panel):
 	def __init__(self, parent):
@@ -21,6 +23,7 @@ class LineChart(wx.Panel):
 		self.Margin = (30, 30, 50, 200) # LEFT, TOP, RIGHT, BOTTOM
 		self.AData = []
 		self.Data = []
+		self.FData = []
 		self.Volumn = []
 		self.Bind(wx.EVT_MOTION, self.onMouseOver)
 		self.SubShow = False
@@ -57,6 +60,8 @@ class LineChart(wx.Panel):
 	def SetVolumnData(self, Data):
 		self.Volumn = Data
 		self.Volumn.sort()
+	def SetFinancialStatement(self, Data):
+		self.FData = Data
 
 	def OnPaint(self, event):
 		self.SetSize(self.GetSize())
@@ -97,6 +102,15 @@ class LineChart(wx.Panel):
 				else:
 					input_str = ('<font style="normal" color="black" weight="bold" size="10" > <sub> %s = %s </sub> </font>' %
 							(show_key, self.AData[int((self.MPosition[0]-self.Axis[0][0])/x_axis)][show_key]))
+				show_str.append(input_str)
+				ww, hh = fancytext.GetExtent(input_str, dc)
+				w.append(ww)
+				hh = hh/3*2
+				h.append(hh)
+				h_total += hh
+			for show_key in self.FData.keys():
+				input_str = ('<font style="normal" color="black" weight="bold" size="10" > <sub> %s = %10.5f </sub> </font>' %
+						(show_key, self.FData[show_key]))
 				show_str.append(input_str)
 				ww, hh = fancytext.GetExtent(input_str, dc)
 				w.append(ww)
@@ -244,14 +258,22 @@ class LineChartExample(wx.Frame):
 	def __init__(self, parent, id, title):
 		wx.Frame.__init__(self, parent, id, title, size=(800, 600))
 
-		records = wave(sys.argv[1], "2011/1/25", "2012/6/25", 5)
-		y = yahoo()
-		#records = y.ma(sys.argv[1], "2011/5/25", "2012/6/25", 5)
+		if len(sys.argv) == 3 and sys.argv[2] == 'wave':
+			records = wave(sys.argv[1] + ".TW", "2011/1/25", "2012/6/25", 5)
+			chart_title = "%s wave chart" % sys.argv[1]
+		else:
+			y = yahoo()
+			records = y.ma(sys.argv[1] + ".TW", "2011/5/25", "2012/6/25", 5)
+			chart_title = "%s K chart" % sys.argv[1]
+
 		dat = []
 		vdat = []
+		fdat = []
 		for i in records:
+			i['Volumn'] = i['Volumn']/1000
 			dat.append([i['Date'], i['Close']])
 			vdat.append([i['Date'], i['Volumn']])
+		fdat = MOPS_fetch(sys.argv[1]).report()	
 
 		self.panel = wx.Panel(self, -1)
 		self.panel.SetBackgroundColour('WHITE')
@@ -259,10 +281,11 @@ class LineChartExample(wx.Frame):
 		hbox = wx.BoxSizer(wx.HORIZONTAL)
 		linechart = LineChart(self.panel)
 		linechart.SetSize((800, 600))
-		linechart.SetTitle("Max's testing. line chart.")
+		linechart.SetTitle(chart_title)
 		linechart.SetData(dat)
 		linechart.SetAllData(records)
 		linechart.SetVolumnData(vdat)
+		linechart.SetFinancialStatement(fdat)
 
 		hbox.Add(linechart, 1, wx.EXPAND | wx.ALL, 15)
 		self.panel.SetSizer(hbox)
