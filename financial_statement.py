@@ -186,8 +186,10 @@ class MOPS_fetch:
 	def report(self):
 		data = self.fetch()
 
+		'''
 		for key in data.keys():
 			print "%s = %10.2f" % (key, data[key])
+		'''
 
 		result = {}
 		# 股東權益比率
@@ -206,7 +208,8 @@ class MOPS_fetch:
 		result['ROA'] = self.items[u'本期淨利(淨損)'] / self.items[u'資產總計']
 		# 財務槓桿指數
 		result['Financial leverage index'] = result['ROE'] / result['ROA']
-
+		# 實質負債比
+		result['Real Debt Ratio'] = self.items[u'長期負債'] / (self.items[u'資產總計'] - self.items[u'流動負債'])
 		return result
 
 
