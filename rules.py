@@ -14,6 +14,7 @@ READY_SELL = 2
 ACCEPT_LOSS = 0.2
 
 def ma_normal_rule(stock, start_day, end_day, ma):
+	print stock
 	ma_key = "MA" + str(ma)
 	signal_key = "signal"
 	operation_key = "operation"
@@ -250,7 +251,7 @@ elif len(sys.argv) != 5:
 	print "(2)\t" + sys.argv[0] + " stock from_day end_day ma"
 
 else:
-	ma_normal_rule(sys.argv[1], sys.argv[2], sys.argv[3], string.atoi(sys.argv[4]))
-	ma_short_sell_rule(sys.argv[1], sys.argv[2], sys.argv[3], string.atoi(sys.argv[4]))
+	ma_normal_rule(sys.argv[1] + ".TW", sys.argv[2], sys.argv[3], string.atoi(sys.argv[4]))
+	ma_short_sell_rule(sys.argv[1] + ".TW", sys.argv[2], sys.argv[3], string.atoi(sys.argv[4]))
 
 
