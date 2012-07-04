@@ -263,7 +263,7 @@ class LineChartExample(wx.Frame):
 			chart_title = "%s wave chart" % sys.argv[1]
 		else:
 			y = yahoo()
-			records = y.ma(sys.argv[1] + ".TW", "2011/5/25", "2012/6/25", 5)
+			records = y.ma(sys.argv[1] + ".TW", "2012/1/25", "2012/6/25", 10)
 			chart_title = "%s K chart" % sys.argv[1]
 
 		dat = []
@@ -273,7 +273,7 @@ class LineChartExample(wx.Frame):
 			i['Volumn'] = i['Volumn']/1000
 			dat.append([i['Date'], i['Close']])
 			vdat.append([i['Date'], i['Volumn']])
-		fdat = MOPS_fetch(sys.argv[1]).report()	
+		fdat = MOPS_fetch().report(sys.argv[1])	
 
 		self.panel = wx.Panel(self, -1)
 		self.panel.SetBackgroundColour('WHITE')

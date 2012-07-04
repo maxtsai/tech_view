@@ -46,6 +46,7 @@ class yahoo:
 		s = self.__check_time_format(s)
 		e = self.__check_time_format(e)
 		url = self.history_quates_url + symbol + "&a=" + str(string.atoi(s[1])-1) + "&b=" + s[2] + "&c=" + s[0] + "&d=" + str(string.atoi(e[1])-1) + "&e=" + e[2] + "&f=" + e[0] + "&g=d"
+		#print url
 		fh = urllib.urlopen(url)
 		a = []
 		for line in fh.readlines():
@@ -57,6 +58,8 @@ class yahoo:
 			a.append(self.__format_record(r))
 		fh.close()
 		#a.pop(0) ## remove column name
+		if len(a) == 0:
+			return ""
 		if a[0][self.DATE].find("404 Not Found") != -1:
 			return ""
 		return a
@@ -106,13 +109,18 @@ class yahoo:
 		else:
 			record.sort(key=lambda x:x[self.DATE], reverse=True)
 			if (datetime.datetime.strptime(record[0][self.DATE], "%Y-%m-%d") - datetime.datetime.strptime(from_day, "%Y/%m/%d")).days > 30:
-				rfrom_day = record[0][self.DATE]
+				for i in range(0,30):
+					if record[i][self.VOLUME] != 0:
+						rfrom_day = record[i][self.DATE]
+						break
 			else:
 				rfrom_day = from_day
+			#print today
 			if rfrom_day == today:
 				print symbol + " already up-to-day"
 				return
 
+		#print rfrom_day
 		h = self.__request_history(symbol, rfrom_day, today)
 		if h == "":
 			#os.remove(PATH + symbol)
