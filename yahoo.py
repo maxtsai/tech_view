@@ -126,7 +126,17 @@ class yahoo:
 			#os.remove(PATH + symbol)
 			print symbol + " no data."
 			return "ignore"
-		record += h
+		record2 = []
+		for i in record:
+			found = False
+			for j in h:
+				if i[self.DATE] == j[self.DATE]:
+					found= True
+					break
+			if found == False:
+				record2.append(i)
+		record2 += h
+		record = record2
 		record.sort(key=lambda x:x[self.DATE], reverse=True)
 		record1 = []
 		'''
@@ -206,4 +216,4 @@ class yahoo:
 
 if __name__ == '__main__':
 	ya = yahoo()
-	ya.update_all_history("stock_list.txt", "2012/1/1")
+	ya.update_all_history("stock_list.txt", "2006/1/1")

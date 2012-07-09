@@ -79,6 +79,8 @@ class MOPS_fetch:
 		self.c2e['Z'] = 'UpdateDate'
 		self.page_cache = ""
 
+		self.show_log = False
+
 	def __fetch(self, url):
 		parm = urllib.urlencode(self.parms)
 		fd = urllib.urlopen(url, parm)
@@ -157,6 +159,8 @@ class MOPS_fetch:
 		for key_name in self.items.keys():
 			print "%s = %s (%s)" % (key_name, self.items[key_name], str(type(self.items[key_name])))
 		'''
+	def setLog(self, enable):
+		self.show_log = enable
 
 	def _fetch(self):
 		self.__fetch_balance()
@@ -190,7 +194,8 @@ class MOPS_fetch:
 				r = self.update_date.split('/')
 				r = "%d/%s/%s" % (atoi(r[0]) + 1911, r[1], r[2])
 				if (datetime.datetime.now() - datetime.datetime.strptime(r, "%Y/%m/%d")).days < 100:
-					print self.parms['co_id'] + " load from cache (" + self.update_date + ")"
+					if self.show_log == True:
+						print self.parms['co_id'] + " load from cache (" + self.update_date + ")"
 					return self.items
 		for key in self.items.keys():
 			self.items[key] = str('0')
@@ -206,7 +211,8 @@ class MOPS_fetch:
 		self.items['co_id'] = symbol
 		data = self._fetch()
 		if data[u'資產總計'] == 0:
-			print symbol + " no data (save_to_file)"
+			if self.show_log == True:
+				print symbol + " no data (save_to_file)"
 			return "no data"
 		f = open("data/%s.fin" % symbol, "w")
 		for key in data.keys():
@@ -215,7 +221,8 @@ class MOPS_fetch:
 					f.write('%s,%f\n' % (key1, data[key]))
 		f.write('Z,%s\n' % self.update_date)
 		f.close()
-		print "update data/%s.fin %s" % (symbol, self.update_date)
+		if self.show_log == True:
+			print "update data/%s.fin %s" % (symbol, self.update_date)
 		time.sleep(1)
 	def load_from_file(self, symbol):
 		if not path.exists("data/%s.fin" % symbol):

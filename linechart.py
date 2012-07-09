@@ -259,11 +259,11 @@ class LineChartExample(wx.Frame):
 		wx.Frame.__init__(self, parent, id, title, size=(800, 600))
 
 		if len(sys.argv) == 3 and sys.argv[2] == 'wave':
-			records = wave(sys.argv[1] + ".TW", "2011/1/25", "2012/6/25", 5)
+			records = wave(sys.argv[1] + ".TW", "2011/1/1", "2012/7/1", 5)
 			chart_title = "%s wave chart" % sys.argv[1]
 		else:
 			y = yahoo()
-			records = y.ma(sys.argv[1] + ".TW", "2012/1/25", "2012/6/25", 10)
+			records = y.ma(sys.argv[1] + ".TW", "2011/1/1", "2012/7/1", 5)
 			chart_title = "%s K chart" % sys.argv[1]
 
 		dat = []
